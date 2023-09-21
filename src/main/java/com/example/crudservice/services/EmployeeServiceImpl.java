@@ -3,7 +3,6 @@ package com.example.crudservice.services;
 import com.example.crudservice.entities.Employee;
 import com.example.crudservice.entities.Organization;
 import com.example.crudservice.repositories.EmployeeRepository;
-import com.example.crudservice.repositories.OrganizationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +13,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
-    private final OrganizationRepository organizationRepository;
+    private final OrganizationService organizationService;
 
     @Override
     public Employee createEmployee(Long organizationId, Employee employee) {
-        Organization organization = organizationRepository.findById(organizationId).orElseThrow(
-                () -> new EntityNotFoundException("Организация с id " + organizationId + " не найдена!"));
+        Organization organization = organizationService.getOrganizationById(organizationId);
         employee.setOrganization(organization);
         return employeeRepository.save(employee);
     }
@@ -31,7 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id).orElse(null);
+        return employeeRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Сотрудник с id " + id + " не найден!"));
     }
 
     @Override

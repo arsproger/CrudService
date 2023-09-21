@@ -1,9 +1,6 @@
 package com.example.crudservice.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,6 +10,7 @@ import java.util.List;
 @Table(name = "organization")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Organization {
@@ -35,4 +33,6 @@ public class Organization {
 
     @OneToMany(mappedBy = "organization")
     private List<Employee> employees;
+    @OneToMany(mappedBy = "organization")
+    private List<OrganizationFile> organizationFiles;
 }

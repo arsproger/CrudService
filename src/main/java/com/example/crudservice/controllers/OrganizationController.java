@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/organizations")
@@ -30,9 +29,10 @@ public class OrganizationController {
     }
 
     @GetMapping
-    public List<OrganizationDto> getAllOrganizations() {
-        return organizationService.getAllOrganizations()
-                .stream().map(mapper::convertToDto).collect(Collectors.toList());
+    public ResponseEntity<List<OrganizationDto>> getAllOrganizations() {
+        List<OrganizationDto> organizations = organizationService.getAllOrganizations()
+                .stream().map(mapper::convertToDto).toList();
+        return new ResponseEntity<>(organizations, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

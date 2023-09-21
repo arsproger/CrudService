@@ -5,6 +5,8 @@ import com.example.crudservice.repositories.OrganizationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,6 +16,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public Organization createOrganization(Organization organization) {
+        organization.setOrganizationFiles(new ArrayList<>());
         return organizationRepository.save(organization);
     }
 
@@ -24,7 +27,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public Organization getOrganizationById(Long id) {
-        return organizationRepository.findById(id).orElse(null);
+        return organizationRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Организация с id " + id + " не найдена!"));
     }
 
     @Override

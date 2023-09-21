@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -32,9 +31,10 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeDto> getAllEmployees() {
-        return employeeService.getAllEmployees()
-                .stream().map(mapper::convertToDto).collect(Collectors.toList());
+    public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
+        List<EmployeeDto> employees = employeeService.getAllEmployees()
+                .stream().map(mapper::convertToDto).toList();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -5,25 +5,21 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "organization_file")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
-public class Employee {
+public class OrganizationFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String email;
-    private String homePhone;
-    private String mobilePhone;
-    private String workPhone;
-    private String homeAddress;
-    private String webpage;
-    private String bankDetails;
-    private String position;
-
+    private String fileName;
+    private String fileType;
+    @Lob
+    private byte[] fileData;
+    
     @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;
